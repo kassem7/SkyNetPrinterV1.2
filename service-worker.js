@@ -1,10 +1,11 @@
-const cacheName = "sky-net-cache-v1";
+const cacheName = "skynet-cache-v1";
 const assets = [
   "./",
   "./index.html",
   "./style/style.css",
   "./script/script.js",
   "./manifest.json",
+  "./img/logo.png",
   "./img/card1.png",
   "./img/card2.png",
   "./img/card3.png",
@@ -27,17 +28,21 @@ const assets = [
   "./img/card20.png",
   "./img/card21.png",
   "./img/card22.png"
-
 ];
 
-self.addEventListener("install", event => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(cacheName).then(cache => cache.addAll(assets))
+    caches.open(cacheName).then((cache) => {
+      return cache.addAll(assets);
+    })
   );
 });
 
-self.addEventListener("fetch", event => {
+self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then(res => res || fetch(event.request))
+    caches.match(event.request).then((response) => {
+      // إذا الملف موجود في الكاش، نرجعه
+      return response || fetch(event.request);
+    })
   );
 });
